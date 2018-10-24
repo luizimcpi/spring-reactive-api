@@ -1,4 +1,4 @@
-package com.devlhse.springreactiveapi.component;
+package com.devlhse.springreactiveapi.endpoint;
 
 import com.devlhse.springreactiveapi.model.Car;
 import com.devlhse.springreactiveapi.model.CarEvents;
