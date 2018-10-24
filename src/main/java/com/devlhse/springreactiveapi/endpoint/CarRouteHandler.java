@@ -41,4 +41,14 @@ public class CarRouteHandler {
 
     }
 
+    Mono<ServerResponse> delete(ServerRequest serverRequest) {
+
+        String carId = serverRequest.pathVariable("carId");
+
+        Mono<Void> serverResponse = Mono.from(fluxCarService.delete(carId));
+
+        return ServerResponse.status(204).body(serverResponse, Void.class).switchIfEmpty(ServerResponse.notFound().build());
+
+    }
+
 }

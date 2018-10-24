@@ -4,6 +4,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Objects;
+import java.util.UUID;
 
 @Document
 public class Car {
@@ -17,7 +18,7 @@ public class Car {
     }
 
     @Id
-    private String id;
+    private String id = UUID.randomUUID().toString();
     private String model;
 
     public String getId() {

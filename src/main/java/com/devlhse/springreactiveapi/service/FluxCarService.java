@@ -31,4 +31,9 @@ public class FluxCarService {
     public Mono<Car> create(Car car) {
         return carRepository.save(car);
     }
+
+    public Mono<Void> delete(String id) {
+        return carRepository.deleteById(id);
+    }
+
 }
