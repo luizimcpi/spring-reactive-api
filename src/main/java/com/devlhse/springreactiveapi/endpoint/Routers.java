@@ -14,6 +14,6 @@ public class Routers {
         return RouterFunctions.route(
                 RequestPredicates.GET("/cars"), routeHandles::allCars)
                 .andRoute(RequestPredicates.GET("/cars/{carId}"), routeHandles::carById)
-                .andRoute(RequestPredicates.GET("/cars/{carId}/events"), routeHandles::events);
+                .andRoute(RequestPredicates.POST("/cars"), routeHandles::createCar);
     }
 }

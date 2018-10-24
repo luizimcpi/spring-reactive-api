@@ -1,7 +1,6 @@
 package com.devlhse.springreactiveapi.service;
 
 import com.devlhse.springreactiveapi.model.Car;
-import com.devlhse.springreactiveapi.model.CarEvents;
 import com.devlhse.springreactiveapi.repository.CarRepository;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
@@ -29,12 +28,7 @@ public class FluxCarService {
         return carRepository.findById(carId);
     }
 
-    public Flux<CarEvents> streams(String carId) {
-        return byId(carId).flatMapMany(car -> {
-            Flux<Long> interval = Flux.interval(Duration.ofSeconds(1));
-            Flux<CarEvents> events = Flux.fromStream(
-                    Stream.generate(() -> new CarEvents(car, new Date())));
-            return Flux.zip(interval, events).map(Tuple2::getT2);
-        });
+    public Mono<Car> create(Car car) {
+        return carRepository.save(car);
     }
 }
