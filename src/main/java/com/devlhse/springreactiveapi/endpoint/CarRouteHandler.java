@@ -13,6 +13,7 @@ import reactor.core.publisher.Mono;
 public class CarRouteHandler {
 
     private final FluxCarService fluxCarService;
+    private final Mono<ServerResponse> notFound = ServerResponse.notFound().build();
 
     public CarRouteHandler(FluxCarService fluxCarService) {
         this.fluxCarService = fluxCarService;
@@ -26,12 +27,13 @@ public class CarRouteHandler {
                 .doOnError(throwable -> new IllegalStateException("There is an error in your search for all..."));
     }
 
-    public Mono<ServerResponse> carById(ServerRequest serverRequest) {
+    public Mono<ServerResponse> carById(ServerRequest serverRequest){
     	String ownerId = serverRequest.pathVariable("ownerId");
     	String carId = serverRequest.pathVariable("carId");
-        
+    	
         return ServerResponse.ok()
                 .body(fluxCarService.byOwnerIdAndCarId(ownerId, carId), Car.class)
+                .switchIfEmpty(notFound)
                 .doOnError(throwable -> new IllegalStateException("There is an error in your search by id..."));
     }
 
@@ -47,13 +49,13 @@ public class CarRouteHandler {
 
     }
 
-    Mono<ServerResponse> delete(ServerRequest serverRequest) {
+    Mono<ServerResponse> delete(ServerRequest serverRequest){
     	String ownerId = serverRequest.pathVariable("ownerId");
         String carId = serverRequest.pathVariable("carId");
         
         Mono<Void> serverResponse = Mono.from(fluxCarService.deleteCarById(ownerId, carId));
 
-        return ServerResponse.status(204).body(serverResponse, Void.class).switchIfEmpty(ServerResponse.notFound().build());
+        return ServerResponse.status(204).body(serverResponse, Void.class).switchIfEmpty(notFound);
 
     }
 

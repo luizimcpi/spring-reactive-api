@@ -13,6 +13,7 @@ import reactor.core.publisher.Mono;
 public class OwnerRouteHandler {
 
     private final FluxOwnerService fluxOwnerService;
+    private final Mono<ServerResponse> notFound = ServerResponse.notFound().build();
 
     public OwnerRouteHandler(FluxOwnerService fluxOwnerService) {
         this.fluxOwnerService = fluxOwnerService;
@@ -28,6 +29,7 @@ public class OwnerRouteHandler {
         String ownerId = serverRequest.pathVariable("ownerId");
         return ServerResponse.ok()
                 .body(fluxOwnerService.byId(ownerId), Owner.class)
+                .switchIfEmpty(notFound)
                 .doOnError(throwable -> new IllegalStateException("There is an error in your search by id..."));
     }
 
@@ -47,7 +49,7 @@ public class OwnerRouteHandler {
 
         Mono<Void> serverResponse = Mono.from(fluxOwnerService.delete(ownerId));
 
-        return ServerResponse.status(204).body(serverResponse, Void.class).switchIfEmpty(ServerResponse.notFound().build());
+        return ServerResponse.status(204).body(serverResponse, Void.class).switchIfEmpty(notFound);
 
     }
 
