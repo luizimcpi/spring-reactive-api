@@ -7,7 +7,7 @@ import org.springframework.web.reactive.function.server.RouterFunction;
 import org.springframework.web.reactive.function.server.RouterFunctions;
 
 @Configuration
-public class Routers {
+public class CarRoutes {
 
     @Bean
     RouterFunction<?> routes(CarRouteHandler carRouteHandler) {

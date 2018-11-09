@@ -1,13 +1,13 @@
 package com.devlhse.springreactiveapi.endpoint;
 
-import com.devlhse.springreactiveapi.model.Car;
-import com.devlhse.springreactiveapi.service.FluxCarService;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
-import reactor.core.publisher.Mono;
 
-import java.net.URI;
+import com.devlhse.springreactiveapi.model.Car;
+import com.devlhse.springreactiveapi.service.FluxCarService;
+
+import reactor.core.publisher.Mono;
 
 @Component
 public class CarRouteHandler {
