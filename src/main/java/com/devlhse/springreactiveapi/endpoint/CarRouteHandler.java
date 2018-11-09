@@ -19,22 +19,28 @@ public class CarRouteHandler {
     }
 
     public Mono<ServerResponse> allCars(ServerRequest serverRequest) {
+    	String ownerId = serverRequest.pathVariable("ownerId");
+    	
         return ServerResponse.ok()
-                .body(fluxCarService.all(), Car.class)
+                .body(fluxCarService.allByOwnerId(ownerId), Car.class)
                 .doOnError(throwable -> new IllegalStateException("There is an error in your search for all..."));
     }
 
     public Mono<ServerResponse> carById(ServerRequest serverRequest) {
-        String carId = serverRequest.pathVariable("carId");
+    	String ownerId = serverRequest.pathVariable("ownerId");
+    	String carId = serverRequest.pathVariable("carId");
+        
         return ServerResponse.ok()
-                .body(fluxCarService.byId(carId), Car.class)
+                .body(fluxCarService.byOwnerIdAndCarId(ownerId, carId), Car.class)
                 .doOnError(throwable -> new IllegalStateException("There is an error in your search by id..."));
     }
 
-    public Mono<ServerResponse> createCar(ServerRequest req) {
+    public Mono<ServerResponse> createCar(ServerRequest serverRequest) {
 
-        Mono<Car> objectMono = req.bodyToMono(Car.class)
-                .flatMap(car ->  Mono.from(fluxCarService.create(car)));
+    	String ownerId = serverRequest.pathVariable("ownerId");
+    	
+        Mono<Car> objectMono = serverRequest.bodyToMono(Car.class)
+                .flatMap(car ->  Mono.from(fluxCarService.create(car, ownerId)));
 
 
         return ServerResponse.status(201).body(objectMono, Car.class);
@@ -42,10 +48,10 @@ public class CarRouteHandler {
     }
 
     Mono<ServerResponse> delete(ServerRequest serverRequest) {
-
+    	String ownerId = serverRequest.pathVariable("ownerId");
         String carId = serverRequest.pathVariable("carId");
-
-        Mono<Void> serverResponse = Mono.from(fluxCarService.delete(carId));
+        
+        Mono<Void> serverResponse = Mono.from(fluxCarService.deleteCarById(ownerId, carId));
 
         return ServerResponse.status(204).body(serverResponse, Void.class).switchIfEmpty(ServerResponse.notFound().build());
 

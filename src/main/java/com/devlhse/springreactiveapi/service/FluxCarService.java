@@ -1,15 +1,12 @@
 package com.devlhse.springreactiveapi.service;
 
+import org.springframework.stereotype.Service;
+
 import com.devlhse.springreactiveapi.model.Car;
 import com.devlhse.springreactiveapi.repository.CarRepository;
-import org.springframework.stereotype.Service;
+
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.util.function.Tuple2;
-
-import java.time.Duration;
-import java.util.Date;
-import java.util.stream.Stream;
 
 @Service
 public class FluxCarService {
@@ -20,20 +17,22 @@ public class FluxCarService {
         this.carRepository = carRepository;
     }
 
-    public Flux<Car> all () {
-        return carRepository.findAll();
+    public Flux<Car> allByOwnerId (String ownerId) {
+        return carRepository.findAllByOwnerId(ownerId);
     }
 
-    public Mono<Car> byId(String carId) {
-        return carRepository.findById(carId);
+    public Mono<Car> byOwnerIdAndCarId(String ownerId, String carId) {
+        return carRepository.findByOwnerIdAndId(ownerId, carId);
     }
 
-    public Mono<Car> create(Car car) {
+    public Mono<Car> create(Car car, String ownerId) {
+    	car.setOwnerId(ownerId);
         return carRepository.save(car);
     }
 
-    public Mono<Void> delete(String id) {
-        return carRepository.deleteById(id);
+    public Mono<Void> deleteCarById(String ownerId, String carId) {
+    	  Mono<Car> car = carRepository.findByOwnerIdAndId(ownerId, carId);
+    	  return carRepository.deleteById(carId);
     }
 
 }
