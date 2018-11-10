@@ -10,15 +10,20 @@ import org.springframework.web.reactive.function.server.RouterFunctions;
 public class ApplicationRoutes {
 
     @Bean
-    RouterFunction<?> routes(CarRouteHandler carRouteHandler, OwnerRouteHandler ownerRouteHandler) {
+    RouterFunction<?> ownerRoutes(OwnerRouteHandler ownerRouteHandler) {
+        return RouterFunctions.route(
+                RequestPredicates.GET("/owners"), ownerRouteHandler::allOwners)
+                .andRoute(RequestPredicates.GET("/owners/{ownerId}"), ownerRouteHandler::ownerById)
+                .andRoute(RequestPredicates.POST("/owners"), ownerRouteHandler::createOwner)
+                .andRoute(RequestPredicates.DELETE("/owners/{ownerId}"), ownerRouteHandler::delete);
+    }
+
+    @Bean
+    RouterFunction<?> carRoutes(CarRouteHandler carRouteHandler) {
         return RouterFunctions.route(
                 RequestPredicates.GET("/owners/{ownerId}/cars"), carRouteHandler::allCars)
                 .andRoute(RequestPredicates.GET("/owners/{ownerId}/cars/{carId}"), carRouteHandler::carById)
                 .andRoute(RequestPredicates.POST("/owners/{ownerId}/cars"), carRouteHandler::createCar)
-                .andRoute(RequestPredicates.DELETE("/owners/{ownerId}/cars/{carId}"), carRouteHandler::delete)
-                .andRoute(RequestPredicates.GET("/owners"), ownerRouteHandler::allOwners)
-                .andRoute(RequestPredicates.GET("/owners/{ownerId}"), ownerRouteHandler::ownerById)
-                .andRoute(RequestPredicates.POST("/owners"), ownerRouteHandler::createOwner)
-                .andRoute(RequestPredicates.DELETE("/owners/{ownerId}"), ownerRouteHandler::delete);
+                .andRoute(RequestPredicates.DELETE("/owners/{ownerId}/cars/{carId}"), carRouteHandler::delete);
     }
 }
