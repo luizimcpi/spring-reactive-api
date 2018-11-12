@@ -30,7 +30,7 @@ public class FluxCarService {
 		return carRepository.save(car);
 	}
 
-	public Mono<Void> deleteCarById(String ownerId, String carId) {
+	public Mono<Void> deleteCarById(String carId) {
 		return carRepository.deleteById(carId);
 	}
 
