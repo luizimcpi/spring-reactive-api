@@ -14,7 +14,7 @@ import com.devlhse.springreactiveapi.repository.OwnerRepository;
 
 import reactor.core.publisher.Flux;
 
-@Component
+/*@Component
 public class DataLoader implements CommandLineRunner {
 
     private final CarRepository carRepository;
@@ -52,4 +52,4 @@ public class DataLoader implements CommandLineRunner {
         
     }
 
-}
+}*/

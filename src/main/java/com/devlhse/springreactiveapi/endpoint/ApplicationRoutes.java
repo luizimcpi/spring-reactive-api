@@ -1,6 +1,6 @@
 package com.devlhse.springreactiveapi.endpoint;
 
-import org.springframework.context.annotation.Bean;
+/*import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
 import org.springframework.web.reactive.function.server.RequestPredicates;
@@ -28,5 +28,5 @@ public class ApplicationRoutes {
                 .andRoute(RequestPredicates.GET("/owners/{ownerId}/cars/{carId}"), carRouteHandler::carById)
                 .andRoute(RequestPredicates.POST("/owners/{ownerId}/cars").and(accept(MediaType.APPLICATION_JSON)), carRouteHandler::createCar)
                 .andRoute(RequestPredicates.DELETE("/owners/{ownerId}/cars/{carId}"), carRouteHandler::delete);
-    }
-}
+    }*
+}*/

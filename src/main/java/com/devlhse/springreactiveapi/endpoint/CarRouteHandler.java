@@ -1,25 +1,21 @@
 package com.devlhse.springreactiveapi.endpoint;
 
 import com.devlhse.springreactiveapi.model.Car;
-import com.devlhse.springreactiveapi.model.Owner;
-import com.devlhse.springreactiveapi.service.FluxCarService;
-import com.devlhse.springreactiveapi.service.FluxOwnerService;
+import com.devlhse.springreactiveapi.service.CarService;
+import com.devlhse.springreactiveapi.service.OwnerService;
 import org.springframework.stereotype.Component;
-import org.springframework.web.reactive.function.BodyExtractors;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
 import reactor.core.publisher.Mono;
 
-import java.util.Optional;
-
 @Component
 public class CarRouteHandler {
 
-    private final FluxOwnerService fluxOwnerService;
-    private final FluxCarService fluxCarService;
+    private final OwnerService fluxOwnerService;
+    private final CarService fluxCarService;
     private final Mono<ServerResponse> notFound = ServerResponse.notFound().build();
 
-    public CarRouteHandler(FluxOwnerService fluxOwnerService, FluxCarService fluxCarService) {
+    public CarRouteHandler(OwnerService fluxOwnerService, CarService fluxCarService) {
         this.fluxOwnerService = fluxOwnerService;
         this.fluxCarService = fluxCarService;
     }
@@ -46,22 +42,15 @@ public class CarRouteHandler {
 
         String ownerId = serverRequest.pathVariable("ownerId");
 
-        return fluxOwnerService.byId(ownerId)
-                .flatMap(existingOwner -> {
-                    Mono<Car> objectMono = serverRequest.bodyToMono(Car.class)
-                            .flatMap(car -> Mono.from(fluxCarService.create(car, ownerId)));
-                    return ServerResponse.status(201).body(objectMono, Car.class);
-                })
-                .defaultIfEmpty((ServerResponse) notFound);
 
         //TODO Corrigir pois esta permitindo inserção de carros com owners inexistentes
-//        fluxOwnerService.existsById(ownerId).doOnError(throwable -> new IllegalStateException("There is an error in your search by customerID..."));
-//
-//
-//        Mono<Car> objectMono = serverRequest.bodyToMono(Car.class)
-//                .flatMap(car -> Mono.from(fluxCarService.create(car, ownerId)));
-//
-//        return ServerResponse.status(201).body(objectMono, Car.class);
+        fluxOwnerService.findById(ownerId).doOnError(throwable -> new IllegalStateException("There is an error in your search by customerID..."));
+
+
+        Mono<Car> objectMono = serverRequest.bodyToMono(Car.class)
+                .flatMap(car -> Mono.from(fluxCarService.create(car, ownerId)));
+
+        return ServerResponse.status(201).body(objectMono, Car.class);
     }
 
     Mono<ServerResponse> delete(ServerRequest serverRequest) {

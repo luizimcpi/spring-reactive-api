@@ -9,11 +9,11 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @Service
-public class FluxCarService {
+public class CarService {
 
 	private final CarRepository carRepository;
 
-	FluxCarService(CarRepository carRepository) {
+	CarService(CarRepository carRepository) {
 		this.carRepository = carRepository;
 	}
 

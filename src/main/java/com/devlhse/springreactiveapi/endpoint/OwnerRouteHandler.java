@@ -1,21 +1,21 @@
 package com.devlhse.springreactiveapi.endpoint;
 
-import org.springframework.stereotype.Component;
+/*import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
 
 import com.devlhse.springreactiveapi.model.Owner;
-import com.devlhse.springreactiveapi.service.FluxOwnerService;
+import com.devlhse.springreactiveapi.service.OwnerService;
 
 import reactor.core.publisher.Mono;
 
 @Component
 public class OwnerRouteHandler {
 
-    private final FluxOwnerService fluxOwnerService;
+    private final OwnerService fluxOwnerService;
     private final Mono<ServerResponse> notFound = ServerResponse.notFound().build();
 
-    public OwnerRouteHandler(FluxOwnerService fluxOwnerService) {
+    public OwnerRouteHandler(OwnerService fluxOwnerService) {
         this.fluxOwnerService = fluxOwnerService;
     }
 
@@ -28,7 +28,7 @@ public class OwnerRouteHandler {
     public Mono<ServerResponse> ownerById(ServerRequest serverRequest) {
         String ownerId = serverRequest.pathVariable("ownerId");
         return ServerResponse.ok()
-                .body(fluxOwnerService.byId(ownerId), Owner.class)
+                .body(fluxOwnerService.findById(ownerId), Owner.class)
                 .switchIfEmpty(notFound)
                 .doOnError(throwable -> new IllegalStateException("There is an error in your search by id..."));
     }
@@ -53,4 +53,4 @@ public class OwnerRouteHandler {
 
     }
 
-}
+}*/

@@ -13,7 +13,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import reactor.core.publisher.Mono;
 
-import java.util.UUID;
+import java.util.Collections;
 
 @RunWith(SpringRunner.class)
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
@@ -27,11 +27,11 @@ public class OwnerIntegrationTests {
     private OwnerRepository ownerRepository;
 
 
-    private final String ownerId = UUID.randomUUID().toString();
+    private final String ownerId = "valid_test_owner_id";
 
 
     @Test
-    public void a_shouldSaveOwner() {
+    public void test_01_shouldSaveOwner() {
         Owner owner = new Owner(ownerId, "Luiz Evangelista", "XXX.XXX.XXX-XX");
 
         webTestClient.post().uri("/owners")
@@ -47,27 +47,47 @@ public class OwnerIntegrationTests {
     }
 
     @Test
-    public void b_shouldGetListOfOwners() {
+    public void test_02_shouldGetListOfOwners() {
         webTestClient.get().uri("/owners")
                 .exchange()
                 .expectStatus().isOk()
                 .expectHeader().valueEquals("Content-Type", MediaType.APPLICATION_JSON_UTF8.toString())
-                .expectBodyList(Owner.class).hasSize(2);
+                .expectBodyList(Owner.class).hasSize(1);
     }
 
     @Test
-    public void c_shouldGetOwnerById() {
+    public void test_03_shouldGetOwnerById() {
 
-        webTestClient.get().uri("/owners/{ownerId}", ownerId).accept(MediaType.APPLICATION_JSON)
+        webTestClient.get().uri("/owners/{id}", ownerId).accept(MediaType.APPLICATION_JSON)
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody();
-//                .jsonPath("$.name").isEqualTo("Luiz Evangelista")
-//                .jsonPath("$.documentNumber").isEqualTo("XXX.XXX.XXX-XX");
     }
 
     @Test
-    public void d_shouldDeleteOwnerById() {
+    public void test_04_shouldUpdateOwnerById() {
+
+        Owner ownerRequest = new Owner();
+        ownerRequest.setName("Luiz Henrique Evangelista");
+        ownerRequest.setDocumentNumber("942.881.123-89");
+
+        webTestClient.put()
+                .uri("/owners/{id}", Collections.singletonMap("id", ownerId))
+                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .accept(MediaType.APPLICATION_JSON_UTF8)
+                .body(Mono.just(ownerRequest), Owner.class)
+                .exchange()
+                .expectStatus().isOk()
+                .expectHeader().contentType(MediaType.APPLICATION_JSON_UTF8)
+                .expectBody()
+                .jsonPath("$.id").isEqualTo(ownerId)
+                .jsonPath("$.name").isEqualTo("Luiz Henrique Evangelista")
+                .jsonPath("$.documentNumber").isEqualTo("942.881.123-89");
+    }
+
+
+    @Test
+    public void test_05_shouldDeleteOwnerById() {
 
         webTestClient.delete().uri("/owners/{ownerId}", ownerId).accept(MediaType.APPLICATION_JSON)
                 .exchange()

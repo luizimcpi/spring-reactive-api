@@ -9,11 +9,11 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @Service
-public class FluxOwnerService {
+public class OwnerService {
 
     private final OwnerRepository ownerRepository;
 
-    FluxOwnerService(OwnerRepository ownerRepository) {
+    OwnerService(OwnerRepository ownerRepository) {
         this.ownerRepository = ownerRepository;
     }
 
@@ -21,15 +21,11 @@ public class FluxOwnerService {
         return ownerRepository.findAll();
     }
 
-    public Mono<Owner> byId(String ownerId) {
+    public Mono<Owner> findById(String ownerId) {
         return ownerRepository.findById(ownerId);
     }
 
-    public Mono<Boolean> existsById(String ownerId){
-        return ownerRepository.existsById(ownerId);
-    }
-
-    public Mono<Owner> create(Owner owner) {
+    public Mono<Owner> save(Owner owner) {
         return ownerRepository.save(owner);
     }
 
