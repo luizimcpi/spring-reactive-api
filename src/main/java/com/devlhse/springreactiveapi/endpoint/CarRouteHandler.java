@@ -1,6 +1,7 @@
 package com.devlhse.springreactiveapi.endpoint;
 
 import com.devlhse.springreactiveapi.model.Car;
+import com.devlhse.springreactiveapi.model.Owner;
 import com.devlhse.springreactiveapi.service.FluxCarService;
 import com.devlhse.springreactiveapi.service.FluxOwnerService;
 import org.springframework.stereotype.Component;
@@ -44,13 +45,23 @@ public class CarRouteHandler {
     public Mono<ServerResponse> createCar(ServerRequest serverRequest) {
 
         String ownerId = serverRequest.pathVariable("ownerId");
+
+        return fluxOwnerService.byId(ownerId)
+                .flatMap(existingOwner -> {
+                    Mono<Car> objectMono = serverRequest.bodyToMono(Car.class)
+                            .flatMap(car -> Mono.from(fluxCarService.create(car, ownerId)));
+                    return ServerResponse.status(201).body(objectMono, Car.class);
+                })
+                .defaultIfEmpty((ServerResponse) notFound);
+
         //TODO Corrigir pois esta permitindo inserção de carros com owners inexistentes
-        fluxOwnerService.byId(ownerId);
-
-        Mono<Car> objectMono = serverRequest.bodyToMono(Car.class)
-                .flatMap(car -> Mono.from(fluxCarService.create(car, ownerId)));
-
-        return ServerResponse.status(201).body(objectMono, Car.class);
+//        fluxOwnerService.existsById(ownerId).doOnError(throwable -> new IllegalStateException("There is an error in your search by customerID..."));
+//
+//
+//        Mono<Car> objectMono = serverRequest.bodyToMono(Car.class)
+//                .flatMap(car -> Mono.from(fluxCarService.create(car, ownerId)));
+//
+//        return ServerResponse.status(201).body(objectMono, Car.class);
     }
 
     Mono<ServerResponse> delete(ServerRequest serverRequest) {

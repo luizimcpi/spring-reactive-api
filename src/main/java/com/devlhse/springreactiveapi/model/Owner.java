@@ -1,17 +1,23 @@
 package com.devlhse.springreactiveapi.model;
 
+import java.util.Date;
+import java.util.Objects;
 import java.util.UUID;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document
+import javax.validation.constraints.NotNull;
+
+@Document(collection = "owners")
 public class Owner {
 
 	@Id
     private String id = UUID.randomUUID().toString();
     private String name;
     private String documentNumber;
+	@NotNull
+	private Date createdAt = new Date();
 	
     public Owner() {
 	}
@@ -41,46 +47,36 @@ public class Owner {
 	public void setDocumentNumber(String documentNumber) {
 		this.documentNumber = documentNumber;
 	}
+	public Date getCreatedAt() {
+		return createdAt;
+	}
+	public void setCreatedAt(Date createdAt) {
+		this.createdAt = createdAt;
+	}
 
 	@Override
 	public String toString() {
-		return "Owner [id=" + id + ", name=" + name + ", documentNumber=" + documentNumber + "]";
-	}
-	
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((documentNumber == null) ? 0 : documentNumber.hashCode());
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		result = prime * result + ((name == null) ? 0 : name.hashCode());
-		return result;
+		return "Owner{" +
+				"id='" + id + '\'' +
+				", name='" + name + '\'' +
+				", documentNumber='" + documentNumber + '\'' +
+				", createdAt=" + createdAt +
+				'}';
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Owner other = (Owner) obj;
-		if (documentNumber == null) {
-			if (other.documentNumber != null)
-				return false;
-		} else if (!documentNumber.equals(other.documentNumber))
-			return false;
-		if (id == null) {
-			if (other.id != null)
-				return false;
-		} else if (!id.equals(other.id))
-			return false;
-		if (name == null) {
-			if (other.name != null)
-				return false;
-		} else if (!name.equals(other.name))
-			return false;
-		return true;
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		Owner owner = (Owner) o;
+		return Objects.equals(id, owner.id) &&
+				Objects.equals(name, owner.name) &&
+				Objects.equals(documentNumber, owner.documentNumber) &&
+				Objects.equals(createdAt, owner.createdAt);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(id, name, documentNumber, createdAt);
 	}
 }

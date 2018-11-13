@@ -43,7 +43,7 @@ public class OwnerRouteHandler {
 
     }
 
-    Mono<ServerResponse> delete(ServerRequest serverRequest) {
+    public Mono<ServerResponse> delete(ServerRequest serverRequest) {
 
         String ownerId = serverRequest.pathVariable("ownerId");
 

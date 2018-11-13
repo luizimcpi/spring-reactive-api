@@ -25,6 +25,10 @@ public class FluxOwnerService {
         return ownerRepository.findById(ownerId);
     }
 
+    public Mono<Boolean> existsById(String ownerId){
+        return ownerRepository.existsById(ownerId);
+    }
+
     public Mono<Owner> create(Owner owner) {
         return ownerRepository.save(owner);
     }
