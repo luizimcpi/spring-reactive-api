@@ -1,6 +1,6 @@
 package com.devlhse.springreactiveapi.endpoint;
 
-import com.devlhse.springreactiveapi.model.Car;
+/*import com.devlhse.springreactiveapi.model.Car;
 import com.devlhse.springreactiveapi.service.CarService;
 import com.devlhse.springreactiveapi.service.OwnerService;
 import org.springframework.stereotype.Component;
@@ -42,8 +42,7 @@ public class CarRouteHandler {
 
         String ownerId = serverRequest.pathVariable("ownerId");
 
-
-        //TODO Corrigir pois esta permitindo inserção de carros com owners inexistentes
+        //Descobrir forma de encontrar por outra entidade e interromper a execução
         fluxOwnerService.findById(ownerId).doOnError(throwable -> new IllegalStateException("There is an error in your search by customerID..."));
 
 
@@ -63,4 +62,4 @@ public class CarRouteHandler {
 
     }
 
-}
+}*/

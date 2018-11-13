@@ -17,15 +17,15 @@ public class CarService {
 		this.carRepository = carRepository;
 	}
 
-	public Flux<Car> allByOwnerId(String ownerId) {
+	public Flux<Car> findAllByOwnerId(String ownerId) {
 		return carRepository.findAllByOwnerId(ownerId);
 	}
 
-	public Mono<Car> byOwnerIdAndCarId(String ownerId, String carId) {
+	public Mono<Car> findByOwnerIdAndCarId(String ownerId, String carId) {
 		return carRepository.findByOwnerIdAndId(ownerId, carId);
 	}
 
-	public Mono<Car> create(Car car, String ownerId) {
+	public Mono<Car> save(Car car, String ownerId) {
 		car.setOwnerId(ownerId);
 		return carRepository.save(car);
 	}

@@ -27,12 +27,12 @@ public class OwnerIntegrationTests {
     private OwnerRepository ownerRepository;
 
 
-    private final String ownerId = "valid_test_owner_id";
+    private final String VALID_OWNER_ID = "valid_test_owner_id";
 
 
     @Test
     public void test_01_shouldSaveOwner() {
-        Owner owner = new Owner(ownerId, "Luiz Evangelista", "XXX.XXX.XXX-XX");
+        Owner owner = new Owner(VALID_OWNER_ID, "Luiz Evangelista", "XXX.XXX.XXX-XX");
 
         webTestClient.post().uri("/owners")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
@@ -58,7 +58,7 @@ public class OwnerIntegrationTests {
     @Test
     public void test_03_shouldGetOwnerById() {
 
-        webTestClient.get().uri("/owners/{id}", ownerId).accept(MediaType.APPLICATION_JSON)
+        webTestClient.get().uri("/owners/{id}", VALID_OWNER_ID).accept(MediaType.APPLICATION_JSON)
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody();
@@ -72,7 +72,7 @@ public class OwnerIntegrationTests {
         ownerRequest.setDocumentNumber("942.881.123-89");
 
         webTestClient.put()
-                .uri("/owners/{id}", Collections.singletonMap("id", ownerId))
+                .uri("/owners/{id}", Collections.singletonMap("id", VALID_OWNER_ID))
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .accept(MediaType.APPLICATION_JSON_UTF8)
                 .body(Mono.just(ownerRequest), Owner.class)
@@ -80,7 +80,7 @@ public class OwnerIntegrationTests {
                 .expectStatus().isOk()
                 .expectHeader().contentType(MediaType.APPLICATION_JSON_UTF8)
                 .expectBody()
-                .jsonPath("$.id").isEqualTo(ownerId)
+                .jsonPath("$.id").isEqualTo(VALID_OWNER_ID)
                 .jsonPath("$.name").isEqualTo("Luiz Henrique Evangelista")
                 .jsonPath("$.documentNumber").isEqualTo("942.881.123-89");
     }
@@ -89,7 +89,7 @@ public class OwnerIntegrationTests {
     @Test
     public void test_05_shouldDeleteOwnerById() {
 
-        webTestClient.delete().uri("/owners/{ownerId}", ownerId).accept(MediaType.APPLICATION_JSON)
+        webTestClient.delete().uri("/owners/{ownerId}", VALID_OWNER_ID).accept(MediaType.APPLICATION_JSON)
                 .exchange()
                 .expectStatus().isNoContent();
     }
