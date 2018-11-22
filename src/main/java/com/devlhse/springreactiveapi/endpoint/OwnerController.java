@@ -36,12 +36,12 @@ public class OwnerController {
                 .defaultIfEmpty(ResponseEntity.notFound().build());
     }
 
-    @PostMapping("/owners")
+    @PostMapping(path = "/owners", consumes = "application/json")
     public ResponseEntity<Mono<Owner>> createOwner(@Valid @RequestBody Owner ownerRequest) throws URISyntaxException {
         return ResponseEntity.created(new URI("/owners")).body(ownerService.save(ownerRequest));
     }
 
-    @PutMapping("/owners/{id}")
+    @PutMapping(path = "/owners/{id}", consumes = "application/json")
     public Mono<ResponseEntity<Owner>> updateOwner(@PathVariable(value = "id") String ownerId,
                                                    @Valid @RequestBody Owner ownerRequest) {
         return ownerService.findById(ownerId)
