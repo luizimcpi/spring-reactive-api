@@ -1,12 +1,12 @@
 package com.devlhse.springreactiveapi.model;
 
-import static com.devlhse.springreactiveapi.model.Car.CarBuilder.aCar;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Map;
 import java.util.UUID;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
+import static com.devlhse.springreactiveapi.model.Car.CarBuilder.aCar;
 
 @Document(collection = "cars")
 public class Car {

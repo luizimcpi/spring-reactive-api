@@ -1,13 +1,12 @@
 package com.devlhse.springreactiveapi.model;
 
-import java.util.Date;
-import java.util.Objects;
-import java.util.UUID;
-
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.validation.constraints.NotNull;
+import java.util.Date;
+import java.util.Objects;
+import java.util.UUID;
 
 @Document(collection = "owners")
 public class Owner {
@@ -18,8 +17,9 @@ public class Owner {
     private String documentNumber;
 	@NotNull
 	private Date createdAt = new Date();
-	
-    public Owner() {
+	private Date updatedAt;
+
+	public Owner() {
 	}
     
     public Owner(String id, String name, String documentNumber) {
@@ -53,15 +53,12 @@ public class Owner {
 	public void setCreatedAt(Date createdAt) {
 		this.createdAt = createdAt;
 	}
+	public Date getUpdatedAt() {
+		return updatedAt;
+	}
 
-	@Override
-	public String toString() {
-		return "Owner{" +
-				"id='" + id + '\'' +
-				", name='" + name + '\'' +
-				", documentNumber='" + documentNumber + '\'' +
-				", createdAt=" + createdAt +
-				'}';
+	public void setUpdatedAt(Date updatedAt) {
+		this.updatedAt = updatedAt;
 	}
 
 	@Override
@@ -72,11 +69,23 @@ public class Owner {
 		return Objects.equals(id, owner.id) &&
 				Objects.equals(name, owner.name) &&
 				Objects.equals(documentNumber, owner.documentNumber) &&
-				Objects.equals(createdAt, owner.createdAt);
+				Objects.equals(createdAt, owner.createdAt) &&
+				Objects.equals(updatedAt, owner.updatedAt);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(id, name, documentNumber, createdAt);
+		return Objects.hash(id, name, documentNumber, createdAt, updatedAt);
+	}
+
+	@Override
+	public String toString() {
+		return "Owner{" +
+				"id='" + id + '\'' +
+				", name='" + name + '\'' +
+				", documentNumber='" + documentNumber + '\'' +
+				", createdAt=" + createdAt +
+				", updatedAt=" + updatedAt +
+				'}';
 	}
 }

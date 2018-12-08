@@ -1,5 +1,7 @@
 package com.devlhse.springreactiveapi.integration;
 
+import com.devlhse.springreactiveapi.dto.request.OwnerRequest;
+import com.devlhse.springreactiveapi.dto.response.OwnerResponse;
 import com.devlhse.springreactiveapi.model.Owner;
 import com.devlhse.springreactiveapi.repository.OwnerRepository;
 import org.junit.FixMethodOrder;
@@ -32,11 +34,13 @@ public class OwnerIntegrationTests {
 
     @Test
     public void test_01_shouldSaveOwner() {
-        Owner owner = new Owner(VALID_OWNER_ID, "Luiz Evangelista", "XXX.XXX.XXX-XX");
+        OwnerRequest request = new OwnerRequest();
+        request.setName("Luiz Evangelista");
+        request.setDocumentNumber("XXX.XXX.XXX-XX");
 
         webTestClient.post().uri("/owners")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
-                .body(Mono.just(owner), Owner.class)
+                .body(Mono.just(request), OwnerRequest.class)
                 .exchange()
                 .expectStatus().isCreated()
                 .expectHeader().valueEquals("Content-Type", MediaType.APPLICATION_JSON_UTF8.toString())
@@ -52,7 +56,7 @@ public class OwnerIntegrationTests {
                 .exchange()
                 .expectStatus().isOk()
                 .expectHeader().valueEquals("Content-Type", MediaType.APPLICATION_JSON_UTF8.toString())
-                .expectBodyList(Owner.class).hasSize(1);
+                .expectBodyList(OwnerResponse.class).hasSize(4);
     }
 
     @Test

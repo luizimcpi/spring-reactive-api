@@ -1,6 +1,14 @@
 server:
-  port: 8080
-  
+  port: 9001
+
+---
 spring:
+  profiles: dev
   data:
     mongodb.uri: mongodb://localhost:27017/cars_crud
+
+---
+spring:
+  profiles: prod
+  data:
+    mongodb.uri: mongodb://user:password@host_ip:27017/cars_crud
