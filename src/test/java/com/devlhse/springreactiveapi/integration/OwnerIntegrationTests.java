@@ -11,6 +11,7 @@ import org.junit.runners.MethodSorters;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import reactor.core.publisher.Mono;
@@ -20,6 +21,7 @@ import java.util.Collections;
 @RunWith(SpringRunner.class)
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@ActiveProfiles("dev")
 public class OwnerIntegrationTests {
 
     @Autowired
@@ -56,7 +58,7 @@ public class OwnerIntegrationTests {
                 .exchange()
                 .expectStatus().isOk()
                 .expectHeader().valueEquals("Content-Type", MediaType.APPLICATION_JSON_UTF8.toString())
-                .expectBodyList(OwnerResponse.class).hasSize(4);
+                .expectBodyList(OwnerResponse.class).hasSize(1);
     }
 
     @Test
@@ -71,7 +73,7 @@ public class OwnerIntegrationTests {
     @Test
     public void test_04_shouldUpdateOwnerById() {
 
-        Owner ownerRequest = new Owner();
+        OwnerRequest ownerRequest = new OwnerRequest();
         ownerRequest.setName("Luiz Henrique Evangelista");
         ownerRequest.setDocumentNumber("942.881.123-89");
 
@@ -79,7 +81,7 @@ public class OwnerIntegrationTests {
                 .uri("/owners/{id}", Collections.singletonMap("id", VALID_OWNER_ID))
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .accept(MediaType.APPLICATION_JSON_UTF8)
-                .body(Mono.just(ownerRequest), Owner.class)
+                .body(Mono.just(ownerRequest), OwnerRequest.class)
                 .exchange()
                 .expectStatus().isOk()
                 .expectHeader().contentType(MediaType.APPLICATION_JSON_UTF8)

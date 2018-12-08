@@ -11,4 +11,4 @@ spring:
 spring:
   profiles: prod
   data:
-    mongodb.uri: mongodb://user:password@host_ip:27017/cars_crud
+    mongodb.uri: mongodb://user:password@host:27017/cars_crud
