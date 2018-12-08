@@ -11,4 +11,11 @@ spring:
 spring:
   profiles: prod
   data:
-    mongodb.uri: mongodb://user:password@host:27017/cars_crud
+    mongodb:
+      authentication-database: admin
+      database: cars_crud
+      host: localhost
+      password: <password>
+      port: 27017
+      username: <user>
+
